@@ -1,7 +1,9 @@
 ﻿
 namespace BeyondOneWebAPI
 {
-    //This class will act as global in API to return results
+    /// <summary>
+    /// This class will act as global in API to return results
+    /// </summary>
     public class APIResponse
     {
         /// <summary>

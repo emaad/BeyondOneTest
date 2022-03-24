@@ -1,5 +1,8 @@
 ﻿namespace BeyondOneWebAPI.Models
 {
+    /// <summary>
+    /// This class will be used to convert json string into object parameters.
+    /// </summary>
     public class TypiCodeModel
     {
         public int id { get; set; }

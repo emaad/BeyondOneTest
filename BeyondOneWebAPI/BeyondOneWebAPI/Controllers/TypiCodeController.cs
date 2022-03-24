@@ -18,7 +18,10 @@ namespace BeyondOneWebAPI.Controllers
             _logger = logger;
             _configuration = configuration;
         }
-
+        /// <summary>
+        /// This method will get all record from the 3rd party, search the text in description field and return results
+        /// </summary>
+        /// <returns></returns>
         //Returning search result
         [HttpGet(Name = "Search")]
         public async Task<ActionResult> Get()
@@ -35,14 +38,15 @@ namespace BeyondOneWebAPI.Controllers
                     Data = dataTypiCode.Where(x => x.body.ToLower().Contains(searchString)).ToList(),//Searching the string text provided
                     Message = ApiMessages.SuccessMessage
                 };
-                _logger.LogInformation("Returning searched data");
+                _logger.LogInformation("Returning searched data");//Log message
                 return Ok(response);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.ToString());//Log error details
+                //return error details
                 return BadRequest(new APIResponse()
                 {
-                    Data = null,
                     Errors = new string[] { ex.Message },
                     Message = ex.Message
                 });
