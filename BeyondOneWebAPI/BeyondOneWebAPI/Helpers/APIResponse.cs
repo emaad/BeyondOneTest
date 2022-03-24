@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
+﻿
 namespace BeyondOneWebAPI
 {
+    //This class will act as global in API to return results
     public class APIResponse
     {
         /// <summary>

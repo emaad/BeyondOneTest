@@ -13,6 +13,7 @@ namespace BeyondOneWebAPI.Controllers
             _logger = logger;
         }
 
+        //returning server time in ISO8601 format
         [HttpGet(Name = "GetServerTime")]
         public ActionResult Get()
         {
@@ -21,7 +22,7 @@ namespace BeyondOneWebAPI.Controllers
                 Data = DateTime.UtcNow.ToString("o"),
                 Message = ApiMessages.SuccessMessage
             };
-
+            _logger.LogInformation("Returning time in ISO8601 format");
             return Ok(response);
         }
     }
