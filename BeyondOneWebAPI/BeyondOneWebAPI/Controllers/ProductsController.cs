@@ -219,5 +219,62 @@ namespace BeyondOneWebAPI.Controllers
             }
         }
 
+        /// <summary>
+        /// This method will return true if stock quantity avaiable in other case false.
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <param name="quantity"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("CheckStockAvailability/{productId}")]
+        public ActionResult CheckStockAvailability(string productId, int quantity)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(productId)) //checking product id provided
+                {
+                    return BadRequest(new APIResponse()
+                    {
+                        Errors = new string[] { "Product Id Required" }
+                    });
+                }
+                if (quantity < 1) //checking product name provided
+                {
+                    return BadRequest(new APIResponse()
+                    {
+                        Errors = new string[] { "Quantity must be greater than 0" }
+                    });
+                }
+
+                var product = _dbContext.Products.FirstOrDefault(x => x.ProductId.ToLower() == productId.ToLower());//Check if product exists
+                if (product == null)
+                    return BadRequest(new APIResponse()// if no product found
+                    {
+                        Errors = new string[] { "No Product found." }
+                    });
+
+                if (product.StockAvailable <= 0)
+                    return BadRequest(new APIResponse()//if the product stock is less than or equal to 0
+                    {
+                        Errors = new string[] { "Not possible to fullfill the requirement as product quantity is less than 1." }
+                    });
+                _logger.LogInformation("Product with quantity found: product ID" + productId);
+                return Ok(new APIResponse()
+                {
+                    Data = quantity <= product.StockAvailable ? true : false,
+                    Message = ApiMessages.SuccessMessage
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.ToString());//Log error details
+                //return error details
+                return BadRequest(new APIResponse()
+                {
+                    Errors = new string[] { ex.Message },
+                    Message = ex.Message
+                });
+            }
+        }
     }
 }
